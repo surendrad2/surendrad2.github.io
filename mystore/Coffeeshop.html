@@ -1,0 +1,185 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color:grey;
+        }
+        h1{
+            color:pink;
+            text-align:center;
+        }
+        h2{
+            color: cyan;
+        }
+       div marquee{
+            color:red;
+            font-size: 35px;
+        }
+      .main {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin: auto;
+            width: 1000px;
+        }
+        div .container{
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid black;
+         }
+         img{
+            width: 250px;
+            height: 250px;
+         }
+            .logo {
+            width: 90px;
+            height: 90px;
+            position: down;
+            top: 20px;
+            left: 20px;
+         }
+         .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;   
+        }
+        .cart-icon:hover {
+            color: cyan;
+        }
+        /* .img{
+            width: 100px;
+            height: 100px;
+        } */
+    </style>
+</head>
+<body>
+    <div><img src="coffee-shop-Logo.jpg" class="logo"></div>
+    <div><marquee>Welcome to My Coffee Shop</marquee></div>
+    <div><h1>My Coffee Shop</h1></div>
+    <div id="products" class="main"></div>
+    <div><h2>My Cart</h2></div>
+    <div id="mycart"></div>
+    <div><button>AddToCart</button></div>
+    <div id="order"></div>
+    <div class="cart-icon"><img src="cart.svg" style="width: 50px; height: 50px;"></div>
+    <div id="c1"></div>
+    <script>
+       let product = [
+        {
+            name: " Arabica ",
+            description: "This my websites",
+            price: 110,
+            image: "Cofee.jpg",
+        },
+        {
+            name: "Robusta",
+            description: "This my websites",
+            price: 120,
+            image: "Cofee2.jpg",
+        },
+        {
+            name: "Irish Coffee",
+            description: "This my websites",
+            price: 103,
+            image: "Cofee3.jpg",
+        },
+        {
+            name: "Long Black",
+            description: "This my websites",
+            price: 70,
+            image: "Cofee4.jpg",
+        },
+        {
+            name: "Doppio",
+            description: "This my websites",
+            price: 50,
+            image: "Cofee5.jpg",
+        },
+        {
+            name: "cold brew",
+            description: "This my websites",
+            price: 66,
+            image: "Cofee6.jpg",
+        },
+       ];
+       let cart = [
+       
+       ]
+       let msg = "";
+       product.forEach((value,order) => {
+        msg = msg + `<div class='container'>
+            <div><img src=${value.image}></div>
+            <div>${value.name}</div>
+           <div>${value.description}</div>
+           <div>${value.price}</div>
+           <div><button id="${order}" onclick="AddToCart(${order})">AddToCart</button></div>
+            </div>`;
+       });
+       products.innerHTML = msg;
+
+    //    let txt = "";
+    //    cart.forEach((value) => {
+    //     txt = txt +
+    //    `<ul>
+    //     <li>${value.name}-${value.price}-${value.qty}-${value.price * value.qty
+    //     }</li>
+    //     </ul>`  
+    // });
+    // mycart.innerHTML = txt;
+
+    // let total = cart.reduce((sum, value) => {
+    //     return sum + value.price * value.qty;
+    // }, 0);
+    // order.innerHTML = "Order Value: " + total;
+    // {
+    // }
+    function AddToCart(order){
+              if(cart[order] ==null){
+                // cart[order]= product[order];
+                cart[order] = JSON.parse(JSON.stringify(product[order]));
+                cart[order].quantity = 1;
+              }else{
+                cart[order].quantity = cart[order].quantity + 1;
+              }
+              console.log(cart);
+              reloadcart();
+
+              }
+            
+function reloadcart() {
+    cart.innerHTML = "";
+    c1.innerHTML = "";
+    cart.forEach((value, order) => {
+        if(value != null) {
+            let newDiv = document.createElement("cart");
+            newDiv.innerHTML = `
+            <div><img src="${value.image}"></div>
+            <div>${value.name}</div>
+            <div>${value.price.toLocaleString()}</div>
+            <div>
+                <button onclick="changeQuantity(${order}, ${value.quantity - 1})">-</button>
+                <div class="count">${value.quantity}</div>
+                <button onclick="changeQuantity(${order}, ${value.quantity + 1})">+</button>
+                </div>`;
+                    c1.appendChild(newDiv);
+        }
+    });
+}
+function changeQuantity(order, quantity) {
+    if(quantity == 0) {
+        delete cart[order];
+    } else{
+        cart[order].quantity = quantity;
+        cart[order].price = quantity * product[order].price;
+    }
+    reloadcart();
+}
+    </script>
+</body>
+</html>
